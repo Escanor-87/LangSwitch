@@ -112,6 +112,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             )
             window.title = "Настройки LangSwitch"
             window.contentView = contentView
+            window.setContentSize(NSSize(width: 400, height: 180))
+            window.minSize = NSSize(width: 400, height: 180)
+            window.maxSize = NSSize(width: 400, height: 180)
             window.isReleasedWhenClosed = false
             window.center()
             settingsWindow = window

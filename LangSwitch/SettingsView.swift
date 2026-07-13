@@ -13,7 +13,7 @@ struct SettingsView: View {
     let appDelegate: AppDelegate
 
     var body: some View {
-        Form {
+        VStack(alignment: .leading, spacing: 14) {
             Toggle("Запускать при старте системы", isOn: $launchAtLogin)
                 .onChange(of: launchAtLogin) { enabled in
                     appDelegate.setLaunchAtLogin(enabled)
@@ -30,7 +30,7 @@ struct SettingsView: View {
                 }
         }
         .padding(20)
-        .frame(width: 360)
+        .frame(width: 360, alignment: .leading)
     }
 }
 
