@@ -62,7 +62,11 @@ hdiutil create \
     "$DMG_PATH"
 
 hdiutil imageinfo "$DMG_PATH" >/dev/null
-shasum -a 256 "$DMG_PATH" > "${DMG_PATH}.sha256"
+DMG_FILENAME="$(basename "$DMG_PATH")"
+(
+    cd "$DIST_DIR"
+    shasum -a 256 "$DMG_FILENAME" > "${DMG_FILENAME}.sha256"
+)
 
 printf '\nCreated installer:\n%s\n\nSHA-256:\n' "$DMG_PATH"
 cat "${DMG_PATH}.sha256"
