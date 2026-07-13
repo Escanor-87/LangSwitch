@@ -16,32 +16,29 @@ import ServiceManagement
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBarItem: NSStatusItem?
     var aboutWindow: NSWindow?
+    var settingsWindow: NSWindow?
     let longPressThreshold: TimeInterval = 0.2;
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // launch at login
-        launchAtLogin()
+        setLaunchAtLogin(AppPreferences.launchAtLogin)
         
         // Create a status bar item with a system icon
         statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         statusBarItem?.button?.image = NSImage(systemSymbolName: "globe", accessibilityDescription: nil)
-        statusBarItem?.isVisible = true
         
         // Add a menu to the status bar item
         let menu = NSMenu()
+        menu.addItem(withTitle: "Settings…", action: #selector(showSettings), keyEquivalent: ",")
+        menu.addItem(.separator())
         menu.addItem(withTitle: "About LangSwitch", action: #selector(showAboutWindow), keyEquivalent: "")
-        menu.addItem(withTitle: "Hide Icon", action: #selector(hideStatusBarIcon), keyEquivalent: "")
         menu.addItem(withTitle: "Exit", action: #selector(exitAction), keyEquivalent: "")
         statusBarItem?.menu = menu
-        
-        // hide menu bar if the button was pressed once
-        let userDefaults = UserDefaults.standard
-        if userDefaults.bool(forKey: "hideStatusBarIcon") {
-            statusBarItem?.isVisible = false
+
+        setStatusBarVisible(AppPreferences.showInMenuBar)
+        setShowInDock(AppPreferences.showInDock)
+        DispatchQueue.main.async { [weak self] in
+            self?.showSettings()
         }
-        
-        NSApp.setActivationPolicy(.accessory)
-        NSApp.hide(nil)
         
         var anotherClicked = false;
         var lastPressTime = Date();
@@ -104,22 +101,57 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
     
-    @objc func launchAtLogin() {
+    @objc func showSettings() {
+        if settingsWindow == nil {
+            let contentView = NSHostingView(rootView: SettingsView(appDelegate: self))
+            let window = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 400, height: 210),
+                styleMask: [.titled, .closable],
+                backing: .buffered,
+                defer: false
+            )
+            window.title = "Настройки LangSwitch"
+            window.contentView = contentView
+            window.setContentSize(NSSize(width: 400, height: 180))
+            window.minSize = NSSize(width: 400, height: 180)
+            window.maxSize = NSSize(width: 400, height: 180)
+            window.isReleasedWhenClosed = false
+            window.center()
+            settingsWindow = window
+        }
+
+        NSApp.activate(ignoringOtherApps: true)
+        settingsWindow?.makeKeyAndOrderFront(nil)
+    }
+
+    func setLaunchAtLogin(_ enabled: Bool) {
         if #available(macOS 13.0, *) {
             do {
-                if SMAppService.mainApp.status == .enabled {
-                    // do nothing
-                    print("Login item already registered.")
-                } else {
+                let status = SMAppService.mainApp.status
+
+                if enabled && status != .enabled {
                     try SMAppService.mainApp.register()
+                } else if !enabled && status == .enabled {
+                    try SMAppService.mainApp.unregister()
                 }
             } catch {
-                print("Failed to enable login item: \(error)")
+                print("Failed to update login item: \(error)")
             }
         } else {
-            // Fallback on earlier versions
             print("Login item functionality is not available on this version of macOS.")
         }
+    }
+
+    func setShowInDock(_ showInDock: Bool) {
+        NSApp.setActivationPolicy(showInDock ? .regular : .accessory)
+    }
+
+    func setStatusBarVisible(_ visible: Bool) {
+        statusBarItem?.isVisible = visible
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
     }
 
 
@@ -162,13 +194,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             alert.messageText = message
             alert.runModal()
         }
-    }
-    
-    @objc func hideStatusBarIcon() {
-        statusBarItem?.isVisible = false
-        let userDefaults = UserDefaults.standard
-        userDefaults.set(true, forKey: "hideStatusBarIcon")
-        UserDefaults.standard.synchronize()
     }
     
     @objc func exitAction() {
