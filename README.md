@@ -11,3 +11,21 @@ MacOS Sonoma has improved language switching. They removed the popup, and switch
 - Disable the default macOS 🌐 button click action in Keyboard settings.
 - Run the LangSwitch app.
 - A settings window opens at startup. It lets you choose whether LangSwitch starts at login, appears in the menu bar, and appears in the Dock.
+
+## Install from a DMG
+
+1. Download the `.dmg` from the [latest release](https://github.com/Escanor-87/LangSwitch/releases/latest).
+2. Open it and drag `LangSwitch.app` onto the `Applications` folder shortcut.
+3. Eject the mounted LangSwitch disk image and open LangSwitch from Applications.
+
+The release installer is universal (`arm64` and `x86_64`) and works on Apple Silicon and Intel Macs.
+
+## Create a release DMG
+
+On a Mac with full Xcode installed:
+
+```bash
+scripts/create-dmg.sh 1.4.2
+```
+
+The command creates `dist/LangSwitch-1.4.2-universal.dmg` plus its SHA-256 checksum. The app is ad-hoc signed; Developer ID signing and Apple notarization require an Apple Developer certificate.
