@@ -13,7 +13,7 @@ struct LangSwitchApp: App {
 
     var body: some Scene {
         Settings {
-            EmptyView().frame(width:.zero)
+            SettingsView(appDelegate: appDelegate)
         }
     }
 }

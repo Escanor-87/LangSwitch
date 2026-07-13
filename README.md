@@ -10,3 +10,4 @@ MacOS Sonoma has improved language switching. They removed the popup, and switch
 - Download and install the app from the releases page.
 - Disable the default macOS 🌐 button click action in Keyboard settings.
 - Run the LangSwitch app.
+- Open **Settings…** from the globe menu to choose whether LangSwitch starts at login and whether it appears in the Dock.

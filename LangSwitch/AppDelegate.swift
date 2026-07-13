@@ -19,8 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let longPressThreshold: TimeInterval = 0.2;
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // launch at login
-        launchAtLogin()
+        setLaunchAtLogin(AppPreferences.launchAtLogin)
         
         // Create a status bar item with a system icon
         statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -29,6 +28,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Add a menu to the status bar item
         let menu = NSMenu()
+        menu.addItem(withTitle: "Settings…", action: #selector(showSettings), keyEquivalent: ",")
+        menu.addItem(.separator())
         menu.addItem(withTitle: "About LangSwitch", action: #selector(showAboutWindow), keyEquivalent: "")
         menu.addItem(withTitle: "Hide Icon", action: #selector(hideStatusBarIcon), keyEquivalent: "")
         menu.addItem(withTitle: "Exit", action: #selector(exitAction), keyEquivalent: "")
@@ -40,7 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             statusBarItem?.isVisible = false
         }
         
-        NSApp.setActivationPolicy(.accessory)
+        setShowInDock(AppPreferences.showInDock)
         NSApp.hide(nil)
         
         var anotherClicked = false;
@@ -104,22 +105,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
     
-    @objc func launchAtLogin() {
+    @objc func showSettings() {
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+    }
+
+    func setLaunchAtLogin(_ enabled: Bool) {
         if #available(macOS 13.0, *) {
             do {
-                if SMAppService.mainApp.status == .enabled {
-                    // do nothing
-                    print("Login item already registered.")
-                } else {
+                let status = SMAppService.mainApp.status
+
+                if enabled && status != .enabled {
                     try SMAppService.mainApp.register()
+                } else if !enabled && status == .enabled {
+                    try SMAppService.mainApp.unregister()
                 }
             } catch {
-                print("Failed to enable login item: \(error)")
+                print("Failed to update login item: \(error)")
             }
         } else {
-            // Fallback on earlier versions
             print("Login item functionality is not available on this version of macOS.")
         }
+    }
+
+    func setShowInDock(_ showInDock: Bool) {
+        NSApp.setActivationPolicy(showInDock ? .regular : .accessory)
     }
 
 

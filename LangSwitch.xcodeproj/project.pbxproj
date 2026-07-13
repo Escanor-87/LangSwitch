@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4C79BECE2A553F0D006A793C /* LangSwitchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C79BECD2A553F0D006A793C /* LangSwitchApp.swift */; };
 		4C79BED02A553F0D006A793C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C79BECF2A553F0D006A793C /* AppDelegate.swift */; };
+		A4D82C1E2F00000100123456 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D82C1D2F00000100123456 /* SettingsView.swift */; };
 		4C79BED22A553F0E006A793C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C79BED12A553F0E006A793C /* Assets.xcassets */; };
 		4C79BED52A553F0E006A793C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C79BED42A553F0E006A793C /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		4C79BECA2A553F0D006A793C /* LangSwitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LangSwitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C79BECD2A553F0D006A793C /* LangSwitchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LangSwitchApp.swift; sourceTree = "<group>"; };
 		4C79BECF2A553F0D006A793C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A4D82C1D2F00000100123456 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4C79BED12A553F0E006A793C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C79BED42A553F0E006A793C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4C79BED62A553F0E006A793C /* LangSwitch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LangSwitch.entitlements; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			children = (
 				4C79BECD2A553F0D006A793C /* LangSwitchApp.swift */,
 				4C79BECF2A553F0D006A793C /* AppDelegate.swift */,
+				A4D82C1D2F00000100123456 /* SettingsView.swift */,
 				4C79BED12A553F0E006A793C /* Assets.xcassets */,
 				4C79BED62A553F0E006A793C /* LangSwitch.entitlements */,
 				4C79BED32A553F0E006A793C /* Preview Content */,
@@ -236,6 +239,7 @@
 			files = (
 				4C79BED02A553F0D006A793C /* AppDelegate.swift in Sources */,
 				4C79BECE2A553F0D006A793C /* LangSwitchApp.swift in Sources */,
+				A4D82C1E2F00000100123456 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
